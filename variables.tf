@@ -90,22 +90,26 @@ variable "vault_pki_roots" {
 
 variable "vault_pki_intermediates" {
   type = map(object({
-    mount            = string
-    common_name      = string
-    signer_root_id   = string
-    vault_server     = string
-    ttl              = optional(number, "3600")
-    max_ttl          = optional(number, "94608000")
-    key_type         = optional(string, "ec")
-    key_bits         = optional(number, 256)
-    country          = optional(string, "DE")
-    locality         = optional(string, "Bonn")
-    province         = optional(string, "NRW")
-    ou               = optional(string, "IT")
-    organization     = optional(string, "Example Inc.")
-    csr_auto_rebuild = optional(bool, false)
-    csr_expiry       = optional(string, "72h")
-    absent           = optional(bool, false)
+    mount                = string
+    common_name          = string
+    vault_server         = string
+    signer_root_id       = optional(string)
+    sign_method          = optional(string, "vault")
+    external_cert_secret = optional(string)
+    external_cert_ready  = optional(bool, false)
+    store_csr            = optional(bool, false)
+    ttl                  = optional(number, "3600")
+    max_ttl              = optional(number, "94608000")
+    key_type             = optional(string, "ec")
+    key_bits             = optional(number, 256)
+    country              = optional(string, "DE")
+    locality             = optional(string, "Bonn")
+    province             = optional(string, "NRW")
+    ou                   = optional(string, "IT")
+    organization         = optional(string, "Example Inc.")
+    csr_auto_rebuild     = optional(bool, false)
+    csr_expiry           = optional(string, "72h")
+    absent               = optional(bool, false)
   }))
   default = {
     inter = {
@@ -113,9 +117,20 @@ variable "vault_pki_intermediates" {
       common_name    = "intermediate.example.com"
       vault_server   = "https://localhost:8200"
       signer_root_id = "pki-root"
+      sign_method    = "vault"
       max_ttl        = "94608000"
       absent         = true
     }
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.vault_pki_intermediates :
+      (
+        try(v.sign_method, "vault") != "external"
+        || try(v.external_cert_secret, null) != null
+      )
+    ])
+    error_message = "If sign_method = \"external\", external_cert_secret must be set."
   }
 }
 
@@ -145,4 +160,9 @@ variable "vault_pki_roles" {
       absent          = true
     }
   }
+}
+
+variable "secret_mount" {
+  type    = string
+  default = "pki-secrets"
 }
