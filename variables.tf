@@ -47,6 +47,7 @@ variable "approle_secrets" {
     token_ttl       = optional(number, 300)
     token_max_ttl   = optional(number, 300)
     token_policy    = list(string)
+    token_period    = optional(number)
     kv_mount        = string
     credential_path = string
     absent          = optional(bool, false)

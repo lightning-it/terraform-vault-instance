@@ -17,9 +17,11 @@ resource "vault_approle_auth_backend_role" "cluster" {
   token_ttl      = each.value.token_ttl
   token_max_ttl  = each.value.token_max_ttl
   token_policies = each.value.token_policy
+  token_period   = each.value.token_period
 
   depends_on = [
-    vault_policy.policy
+    vault_policy.policy,
+    vault_mount.secret
   ]
 }
 
@@ -36,6 +38,9 @@ resource "vault_approle_auth_backend_role_secret_id" "cluster" {
 resource "vault_kv_secret_v2" "approle_credentials" {
   for_each = vault_approle_auth_backend_role_secret_id.cluster
 
+  depends_on = [
+    vault_mount.secret
+  ]
   mount     = local.active_approles[each.key].kv_mount
   name      = local.active_approles[each.key].credential_path
   namespace = each.value.namespace

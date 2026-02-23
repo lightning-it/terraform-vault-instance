@@ -22,8 +22,9 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "csr" {
 resource "vault_kv_secret_v2" "csr_store" {
   for_each = { for k, v in local.active_inters : k => v if try(v.store_csr, false) }
 
-  mount = var.secret_mount
-  name  = "${each.key}/csr"
+  depends_on = [vault_mount.secret]
+  mount      = var.secret_mount
+  name       = "${each.key}/csr"
 
   data_json = jsonencode({
     csr = vault_pki_secret_backend_intermediate_cert_request.csr[each.key].csr
@@ -55,8 +56,9 @@ data "vault_kv_secret_v2" "external_cert" {
     && try(v.external_cert_ready, false) == true
   }
 
-  mount = var.secret_mount
-  name  = each.value.external_cert_secret
+  depends_on = [vault_mount.secret]
+  mount      = var.secret_mount
+  name       = each.value.external_cert_secret
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "set_cert_vault" {
