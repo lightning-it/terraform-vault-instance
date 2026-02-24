@@ -192,7 +192,7 @@ variable "jwt_auth_backend_roles" {
     bound_claims      = optional(map(string))
     role_type         = optional(string, "jwt")
     bound_audiences   = optional(list(string))
-    token_policy      = list(string)
+    token_policy      = optional(list(string))
     absent            = optional(bool, false)
   }))
   default = {

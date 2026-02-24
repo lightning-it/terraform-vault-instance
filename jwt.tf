@@ -11,6 +11,7 @@ locals {
   }
 }
 
+# JWT Auth Backend
 resource "vault_jwt_auth_backend" "backend" {
   for_each = local.active_jwt_auth_backends
 
@@ -23,7 +24,7 @@ resource "vault_jwt_auth_backend" "backend" {
   jwt_validation_pubkeys = try(each.value.jwt_validation_pubkeys, null)
 }
 
-# JWT Auth Backend-Rollen
+# JWT Auth Backend roles
 resource "vault_jwt_auth_backend_role" "role" {
   for_each = local.active_jwt_auth_backend_roles
 
@@ -39,7 +40,7 @@ resource "vault_jwt_auth_backend_role" "role" {
   bound_claims_type = try(each.value.bound_claims_type, "string")
   bound_claims      = try(each.value.bound_claims, null)
   bound_audiences   = try(each.value.bound_audiences, null)
-  token_policies    = each.value.token_policies
+  token_policies    = each.value.token_policy
 
   depends_on = [
     vault_jwt_auth_backend.backend,
