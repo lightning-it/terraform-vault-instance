@@ -163,6 +163,49 @@ variable "vault_pki_roles" {
   }
 }
 
+variable "jwt_auth_backends" {
+  type = map(object({
+    path                   = string
+    namespace              = optional(string)
+    oidc_discovery_url     = optional(string)
+    bound_issuer           = optional(string)
+    type                   = optional(string, "oidc")
+    oidc_discovery_ca_pem  = optional(string)
+    jwt_validation_pubkeys = optional(list(string))
+    absent                 = optional(bool, false)
+  }))
+  default = {
+    placeholder = {
+      path   = "placeholder"
+      absent = true
+    }
+  }
+}
+
+variable "jwt_auth_backend_roles" {
+  type = map(object({
+    backend_key       = string
+    role_name         = string
+    user_claim        = string
+    namespace         = optional(string)
+    bound_claims_type = optional(string, "string")
+    bound_claims      = optional(map(string))
+    role_type         = optional(string, "jwt")
+    bound_audiences   = optional(list(string))
+    token_policy      = list(string)
+    absent            = optional(bool, false)
+  }))
+  default = {
+    placeholder = {
+      backend_key  = "foo"
+      role_name    = "placeholder"
+      user_claim   = "claim"
+      token_policy = ["default"]
+      absent       = true
+    }
+  }
+}
+
 variable "secret_mount" {
   type    = string
   default = "pki-secrets"
