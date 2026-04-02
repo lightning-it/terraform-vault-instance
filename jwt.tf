@@ -1,19 +1,6 @@
-# Approles for external secrets
-# Lokale gefilterte Liste ohne "absent: true"
-locals {
-  active_jwt_auth_backends = {
-    for key, value in var.jwt_auth_backends :
-    key => value if !try(value.absent, false)
-  }
-  active_jwt_auth_backend_roles = {
-    for key, value in var.jwt_auth_backend_roles :
-    key => value if !try(value.absent, false)
-  }
-}
-
 # JWT Auth Backend
 resource "vault_jwt_auth_backend" "backend" {
-  for_each = local.active_jwt_auth_backends
+  for_each = var.bootstrap_phase >= 2 ? local.active.jwt_backends : {}
 
   namespace              = try(each.value.namespace, null)
   path                   = each.value.path
@@ -22,11 +9,17 @@ resource "vault_jwt_auth_backend" "backend" {
   bound_issuer           = try(each.value.bound_issuer, null)
   oidc_discovery_ca_pem  = try(each.value.oidc_discovery_ca_pem, null)
   jwt_validation_pubkeys = try(each.value.jwt_validation_pubkeys, null)
+
+  lifecycle {
+    ignore_changes = [
+      jwt_validation_pubkeys
+    ]
+  }
 }
 
 # JWT Auth Backend roles
 resource "vault_jwt_auth_backend_role" "role" {
-  for_each = local.active_jwt_auth_backend_roles
+  for_each = var.bootstrap_phase >= 2 ? local.active.jwt_roles : {}
 
   namespace = try(each.value.namespace, null)
 

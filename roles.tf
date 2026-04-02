@@ -1,8 +1,9 @@
 resource "vault_pki_secret_backend_role" "issue" {
-  for_each = local.active_roles
+  for_each = var.bootstrap_phase >= 3 ? local.active.pki_roles : {}
 
-  backend = vault_mount.inter[each.value.mount].path
-  name    = each.value.name
+  backend   = vault_mount.inter[each.value.mount].path
+  name      = each.value.name
+  namespace = each.value.namespace
 
   key_type           = try(each.value.key_type, "ec")
   key_bits           = try(each.value.key_bits, 256)
