@@ -1,7 +1,8 @@
 resource "vault_mount" "root" {
-  for_each = local.active_roots
+  for_each = var.bootstrap_phase >= 3 ? local.active.pki_roots : {}
 
   path        = each.value.mount
+  namespace   = each.value.namespace
   type        = "pki"
   description = "Root CA - ${each.value.common_name}"
 
@@ -10,10 +11,11 @@ resource "vault_mount" "root" {
 }
 
 resource "vault_pki_secret_backend_root_cert" "root" {
-  for_each   = local.active_roots
+  for_each   = var.bootstrap_phase >= 3 ? local.active.pki_roots : {}
   depends_on = [vault_mount.root]
 
-  backend = vault_mount.root[each.key].path
+  namespace = each.value.namespace
+  backend   = vault_mount.root[each.key].path
 
   type                 = "internal"
   common_name          = each.value.common_name
@@ -26,8 +28,9 @@ resource "vault_pki_secret_backend_root_cert" "root" {
 }
 
 resource "vault_pki_secret_backend_config_urls" "root_urls" {
-  for_each = local.active_roots
+  for_each = var.bootstrap_phase >= 3 ? local.active.pki_roots : {}
 
+  namespace               = each.value.namespace
   backend                 = vault_mount.root[each.key].path
   issuing_certificates    = ["${each.value.vault_server}/v1/${vault_mount.root[each.key].path}/ca"]
   crl_distribution_points = ["${each.value.vault_server}/v1/${vault_mount.root[each.key].path}/crl"]
