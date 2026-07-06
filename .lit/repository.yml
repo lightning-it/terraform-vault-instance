@@ -1,27 +1,29 @@
+---
 schema_version: 1
-managed_by: lightning-it/shared-assets
+managed_by: lightning-it/shared-assets-lit
 repository: terraform-vault-instance
 visibility: public
+license_spdx: MIT
 repository_type: terraform_module
 release_type: semantic_release
 artifact_type: terraform_registry_module
 test_profiles:
-- terraform-fmt
-- terraform-validate
-- docs
+  - terraform-fmt
+  - terraform-validate
+  - docs
 os_matrix:
-- ubuntu-latest
+  - ubuntu-latest
 product_matrix:
-- terraform
-- vault-provider
+  - terraform
+  - vault-provider
 publishing_targets:
-- terraform-registry
+  - terraform-registry
 galaxy_publish: false
 quay_publish: false
 release_evidence: false
 heavy_incus_required: false
 readme_badges:
-- release
-- license
+  - release
+  - license
 workflows:
   ci: repository-quality.yml
