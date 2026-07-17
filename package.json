@@ -1,5 +1,5 @@
 {
-  "name": "terraform-keycloak-instance",
+  "name": "terraform-vault-instance",
   "version": "0.0.0",
   "private": true,
   "engines": {
