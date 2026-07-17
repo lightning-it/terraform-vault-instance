@@ -30,7 +30,8 @@ jobs:
     steps:
       # 1) Checkout the repository
       - name: Checkout
-        uses: actions/checkout@v4
+        # v7.0.0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       # 2) Install Terraform CLI
       - name: Setup Terraform
@@ -76,7 +77,8 @@ jobs:
     steps:
       # Checkout with full history for semantic-release
       - name: Checkout
-        uses: actions/checkout@v4
+        # v7.0.0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0  # semantic-release needs full history
 
@@ -108,7 +110,8 @@ jobs:
     steps:
       # Checkout with full history to let semantic-release inspect tags/commits
       - name: Checkout
-        uses: actions/checkout@v4
+        # v7.0.0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
 
