@@ -34,7 +34,7 @@ jobs:
 
       # 2) Install Terraform CLI
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_wrapper: false
           terraform_version: ${{ matrix.terraform_version }}
@@ -82,9 +82,9 @@ jobs:
 
       # Setup Node for semantic-release
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       # Install Node dependencies from package-lock.json
@@ -114,9 +114,9 @@ jobs:
 
       # Setup Node for semantic-release
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       # Install Node dependencies from package-lock.json
