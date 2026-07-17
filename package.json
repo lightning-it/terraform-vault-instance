@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": ">=22"
+    "node": "^22.14.0 || >=24.10.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.0",
