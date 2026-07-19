@@ -82,7 +82,7 @@ variable "approle_secrets" {
   validation {
     condition = alltrue([
       for k, v in var.approle_secrets :
-      contains(keys(var.auth_backends), v.backend)
+      v.absent == true ? true : contains(keys(var.auth_backends), v.backend)
     ])
     error_message = "Backend in approle_secrets must exist in auth_backends."
   }
