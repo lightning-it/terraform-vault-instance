@@ -19,26 +19,29 @@ resource "vault_approle_auth_backend_role" "cluster" {
 
 # Secret IDs
 resource "vault_approle_auth_backend_role_secret_id" "cluster" {
-  for_each = var.bootstrap_phase >= 3 ? vault_approle_auth_backend_role.cluster : {}
+  for_each = var.bootstrap_phase >= 3 ? local.active.approles : {}
 
-  backend   = each.value.backend
+  backend   = vault_auth_backend.approle[each.value.backend].path
   role_name = each.value.role_name
   namespace = each.value.namespace
 }
 
 # KV Secrets mit role_id und secret_id
 resource "vault_kv_secret_v2" "approle_credentials" {
-  for_each = var.bootstrap_phase >= 3 ? vault_approle_auth_backend_role_secret_id.cluster : {}
+  for_each = var.bootstrap_phase >= 3 ? local.active.approles : {}
 
-  depends_on = [
-    vault_mount.secret
-  ]
-  mount     = local.active.approles[each.key].kv_mount
-  name      = local.active.approles[each.key].credential_path
+  mount     = each.value.kv_mount
+  name      = each.value.credential_path
   namespace = each.value.namespace
 
+  # Dynamische Werte (role_id, secret_id) werden hier referenziert
   data_json = jsonencode({
     role_id   = vault_approle_auth_backend_role.cluster[each.key].role_id
-    secret_id = each.value.secret_id
+    secret_id = vault_approle_auth_backend_role_secret_id.cluster[each.key].secret_id
   })
+
+  depends_on = [
+    vault_mount.secret,
+    vault_approle_auth_backend_role_secret_id.cluster
+  ]
 }
