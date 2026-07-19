@@ -22,8 +22,8 @@ LICENSE_HEADERS = {
     "GPL-3.0-only": "GNU GENERAL PUBLIC LICENSE",
     "GPL-3.0-or-later": "GNU GENERAL PUBLIC LICENSE",
 }
-INVALID_BADGE_VALUE_PATTERN = re.compile(r"(container\s+\(?none\)?|\((?:none|null|undefined)\)|\bundefined\b|\bnull\b)", re.I)
-QUAY_STATUS_URL_PATTERN = re.compile(
+INVALID_BADGE_VALUES = re.compile(r"(container\s+\(?none\)?|\((?:none|null|undefined)\)|\bundefined\b|\bnull\b)", re.I)
+QUAY_STATUS_URL = re.compile(
     r"https?://quay\.io/repository/"
     r"[^/\s)\]}>\"'<]+/[^/\s)\]}>\"'<]+/status"
     r"(?:[/?#][^\s)\]}>\"'<]*)?",
@@ -89,9 +89,9 @@ def quality_badge_block(readme: str) -> str:
 
 
 def check_quality_badge_block(badge_block: str) -> None:
-    if QUAY_STATUS_URL_PATTERN.search(badge_block):
+    if QUAY_STATUS_URL.search(badge_block):
         raise AssertionError("README.md uses Quay status badge endpoint")
-    if INVALID_BADGE_VALUE_PATTERN.search(badge_block):
+    if INVALID_BADGE_VALUES.search(badge_block):
         raise AssertionError("README.md quality badge block contains invalid placeholder value")
 
 
