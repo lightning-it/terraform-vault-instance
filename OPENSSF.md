@@ -18,7 +18,7 @@ The Scorecard badge is included in `README.md` only for public repositories wher
 
 ## Best Practices Badge
 
-Required but not enrolled. Enroll manually at OpenSSF Best Practices, complete the questionnaire until the project reaches the configured target level, then record the numeric project ID in `openssf_best_practices.project_id` in `.lit/repository.yml`.
+Required but not enrolled. Enroll manually at OpenSSF Best Practices, complete the questionnaire until the project reaches the configured target level, then set `openssf_best_practices.project_id` to the numeric project ID in `.lit/repository.yml`.
 
 Do not add a passing OpenSSF Best Practices badge until the repository is actually enrolled and passing. Badges must be generated from the central `release-model/repositories.yml` inventory in `lightning-it/shared-assets-lit`; hand-written badges are rejected by the release-model audit.
 
