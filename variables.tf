@@ -98,7 +98,7 @@ variable "approle_secrets" {
   }
 }
 
-variable "vault_pki_roots" {
+variable "pki_roots" {
   type = map(object({
     mount        = string
     common_name  = string
@@ -127,7 +127,7 @@ variable "vault_pki_roots" {
 
 # TTL values are seconds (number)
 # Vault duration values remain strings (e.g. csr_expiry)
-variable "vault_pki_intermediates" {
+variable "pki_intermediates" {
   type = map(object({
     mount                = string
     common_name          = string
@@ -164,7 +164,7 @@ variable "vault_pki_intermediates" {
   }
   validation {
     condition = alltrue([
-      for k, v in var.vault_pki_intermediates :
+      for k, v in var.pki_intermediates :
       (
         try(v.sign_method, "vault") != "external"
         || try(v.external_cert_secret, null) != null
@@ -174,7 +174,7 @@ variable "vault_pki_intermediates" {
   }
 }
 
-variable "vault_pki_roles" {
+variable "pki_roles" {
   type = map(object({
     mount              = string
     name               = string
@@ -251,7 +251,7 @@ variable "secret_mount" {
   default = "pki-secrets"
 }
 
-variable "transit_secret_backend_key" {
+variable "transit_secret_backend_keys" {
   type = map(object({
     name      = string
     backend   = string
@@ -268,7 +268,7 @@ variable "transit_secret_backend_key" {
   }
 }
 
-variable "namespace" {
+variable "namespaces" {
   type = map(object({
     path   = string
     absent = optional(bool, false)
