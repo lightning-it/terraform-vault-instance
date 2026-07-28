@@ -67,17 +67,19 @@ variable "policies" {
 
 variable "approle_secrets" {
   type = map(object({
-    role_name       = string
-    backend         = optional(string, "global_approle")
-    namespace       = optional(string)
-    token_ttl       = optional(number, 300)
-    token_max_ttl   = optional(number, 300)
-    token_policy    = list(string)
-    token_type      = optional(string, "default")
-    token_period    = optional(number)
-    kv_mount        = string
-    credential_path = string
-    absent          = optional(bool, false)
+    role_name          = string
+    backend            = optional(string, "global_approle")
+    namespace          = optional(string)
+    token_ttl          = optional(number, 300)
+    token_max_ttl      = optional(number, 300)
+    token_policy       = list(string)
+    token_type         = optional(string, "default")
+    token_period       = optional(number)
+    secret_id_ttl      = optional(number)
+    secret_id_num_uses = optional(number)
+    kv_mount           = string
+    credential_path    = string
+    absent             = optional(bool, false)
   }))
   validation {
     condition = alltrue([
