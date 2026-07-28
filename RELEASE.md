@@ -9,7 +9,7 @@ This repository follows the Lightning IT shared release and quality model.
 - Release type: `semantic_release`
 - Artifact type: `terraform_registry_module`
 - Visibility: `public`
-- Release evidence: `enabled`
+- Release evidence: `disabled`
 - Heavy Incus release validation: `not required`
 
 ## Branch Flow
@@ -40,23 +40,6 @@ This repository follows the Lightning IT shared release and quality model.
 
 ## Release Evidence
 
-The exact `main` commit, successful Terraform validation job,
-semantic-release run, immutable version tag, generated changelog, GitHub
-Release, and Terraform Registry version form the release evidence.
-
-The registry distributes repository source for an immutable Git tag rather
-than a binary or container, so a package SBOM is not applicable. Terraform
-Registry has no consumer-side signature-verification contract for modules.
-Provenance/signing is an exception owned by `@lightning-it/ent:release`,
-compensated by protected release flow, full-SHA Actions, immutable tags, lock
-files, and public source review; review/expiry: `2026-10-31`.
-
-As of `2026-07-28`, the latest `semantic-release` transitively bundles npm
-versions affected by `GHSA-mh99-v99m-4gvg` (high) and
-`GHSA-r292-9mhp-454m` (moderate); no non-breaking upstream release resolves
-them. The tooling runs only after protected-branch validation and consumes the
-fixed release configuration, not user-provided glob or tar input. Exception
-owner: `@lightning-it/ent:release`; review/expiry: `2026-08-31`. Renovate must
-adopt the first compatible upstream fix.
+Release evidence is disabled because this repository does not publish release artifacts. Evidence records the repository name, repository type, version, tag, commit SHA, workflow run, tested matrix combinations, passed/failed/skipped jobs, built artifacts, published artifacts, changelog link, security scan result, and SBOM/provenance/signature links when available.
 
 Evidence files must not contain tokens, credentials, private inventory values, or secret material.
