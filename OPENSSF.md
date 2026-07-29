@@ -2,6 +2,27 @@
 
 This repository follows the Lightning IT shared OpenSSF readiness model generated from `lightning-it/shared-assets-lit`.
 
+## Governing Decisions And Standards
+
+The controlled internal architecture register contains the following governing
+decisions. Internal knowledge-base locations are deliberately not published in
+this public repository:
+
+- Repository Topology and Shared Engineering Assets
+- Branching, Review and Release Governance
+- Transitional Self-Approval for Protected Deployments
+- Mandatory CI Quality and Artifact Assurance
+- Distributed Test Ownership and Central Heavy Execution
+- ModuLix Lifecycle, Versioning and Release Evidence
+- Repository and Secure SDLC Standard
+- Technology Engineering Standards
+- Quality Gates and Definition of Done
+- OpenSSF and Software Supply Chain Assurance
+- Compliance Gaps and Migration Roadmap
+
+The public implementation is independently reviewable through this repository's
+policy files, protected workflows, required checks, and release evidence.
+
 ## Repository
 
 - Repository: `terraform-vault-instance`
@@ -12,7 +33,7 @@ This repository follows the Lightning IT shared OpenSSF readiness model generate
 
 ## Scorecard
 
-Enabled through `.github/workflows/openssf-scorecard.yml` with scheduled, manual, and `branch_protection_rule` triggers. The workflow executes a digest-pinned Scorecard container and uploads SARIF to GitHub code scanning. Repository-run results are not published to the OpenSSF API because its workflow verifier does not currently accept the immutable container invocation.
+Enabled through `.github/workflows/openssf-scorecard.yml` with scheduled, manual, and `branch_protection_rule` triggers. The workflow executes a digest-pinned Scorecard container, retains SARIF as an artifact of the GitHub Actions workflow run, and uploads SARIF to GitHub code scanning where the repository supports it. Repository-run results are not published to the OpenSSF API because its workflow verifier does not currently accept the immutable container invocation.
 
 The Scorecard badge is included in `README.md` only for public repositories where the workflow is synced. It can reflect OpenSSF's independent scan rather than a repository-published result.
 
@@ -31,7 +52,8 @@ Do not add a passing OpenSSF Best Practices badge until the repository is actual
 - `main` is the protected release branch.
 - `develop` is the integration branch for normal work, Renovate, and shared-assets-lit PRs.
 - Every pull request must have a completed GitHub Copilot review for its current head revision.
-- Promotion and integration PRs may auto-merge only after required checks pass and all review conversations are resolved.
+- `develop` to `main` promotion PRs are manual release gates and must never auto-merge.
+- Integration and backmerge PRs may auto-merge only after required checks pass, all review conversations are resolved, and there are no conflicts.
 - Releases and publishing happen only from trusted `main` workflows after validation.
 - Release evidence is generated for repositories with release artifacts.
 

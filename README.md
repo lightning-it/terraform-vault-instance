@@ -1,5 +1,10 @@
 # terraform-vault-instance
 
+Engineering controls follow the accepted repository-topology, branching and
+release-governance, mandatory-CI and artifact-assurance ADRs, together with the
+Lightning IT secure-SDLC, quality-gate, and software-supply-chain assurance
+standards. Internal knowledge-base locations are intentionally not published.
+
 <!-- BEGIN LIT_SHARED_RELEASE_MODEL -->
 
 ## Release and Quality Model
@@ -21,11 +26,11 @@ Publishing targets: `terraform-registry`.
 
 ## Supported and Tested Platforms
 
-| Platform / Product | Status | Validation |
-|---|---:|---|
-| ubuntu-latest | Supported | Terraform validate |
-| terraform | Tested where applicable | Terraform validate |
-| vault-provider | Tested where applicable | Terraform validate |
+| Platform / Product |                  Status | Validation         |
+| ------------------ | ----------------------: | ------------------ |
+| ubuntu-latest      |               Supported | Terraform validate |
+| terraform          | Tested where applicable | Terraform validate |
+| vault-provider     | Tested where applicable | Terraform validate |
 
 <!-- END LIT_SHARED_RELEASE_MODEL -->
 
