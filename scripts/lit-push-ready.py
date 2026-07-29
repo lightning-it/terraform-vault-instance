@@ -128,8 +128,17 @@ def execute_checks(config: dict) -> list[dict]:
             raise RuntimeError("each check must be an object")
         name = check.get("name")
         command = check.get("command")
-        if not name or not isinstance(command, list) or not command:
-            raise RuntimeError("each check requires a name and non-empty command array")
+        if (
+            not isinstance(name, str)
+            or not name
+            or not isinstance(command, list)
+            or not command
+            or any(not isinstance(argument, str) for argument in command)
+        ):
+            raise RuntimeError(
+                "each check requires a non-empty string name and "
+                "non-empty command array of strings"
+            )
         started = time.monotonic()
         print(f"==> {name}: {shlex.join(command)}", flush=True)
         result = run(command)
