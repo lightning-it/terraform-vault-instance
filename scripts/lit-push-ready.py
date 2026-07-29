@@ -135,7 +135,10 @@ def execute_checks(config: dict) -> list[dict]:
             or not command
             or any(not isinstance(argument, str) for argument in command)
         ):
-            raise RuntimeError("each check requires a name and non-empty command array")
+            raise RuntimeError(
+                "each check requires a non-empty string name and "
+                "non-empty command array of strings"
+            )
         started = time.monotonic()
         print(f"==> {name}: {shlex.join(command)}", flush=True)
         result = run(command)
