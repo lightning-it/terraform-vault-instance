@@ -39,6 +39,7 @@ Publishing targets: `terraform-registry`.
 [![CI](https://github.com/lightning-it/terraform-vault-instance/actions/workflows/repository-quality.yml/badge.svg?branch=develop)](https://github.com/lightning-it/terraform-vault-instance/actions/workflows/repository-quality.yml)
 [![Latest Release](https://img.shields.io/github/v/release/lightning-it/terraform-vault-instance?sort=semver)](https://github.com/lightning-it/terraform-vault-instance/releases/latest)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lightning-it/terraform-vault-instance/badge)](https://scorecard.dev/viewer/?uri=github.com/lightning-it/terraform-vault-instance)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13892/badge)](https://www.bestpractices.dev/projects/13892)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 <!-- END LIT_QUALITY_BADGES -->
