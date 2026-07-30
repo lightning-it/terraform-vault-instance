@@ -1,0 +1,18 @@
+# Terraform working directories and local state contain downloaded executables,
+# credentials, and environment-specific infrastructure data.
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Local-only variable and override files must never become repository inputs.
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keep the dependency lock file tracked for reproducible provider resolution.
+!.terraform.lock.hcl
