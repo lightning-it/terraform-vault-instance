@@ -34,7 +34,7 @@ resource "vault_approle_auth_backend_role_secret_id" "cluster" {
   }
 
   depends_on = [
-    vault_approle_auth_backend_role.cluster
+    vault_approle_auth_backend_role.cluster[each.key]
   ]
 }
 

@@ -88,6 +88,14 @@ variable "approle_secrets" {
     ])
     error_message = "Backend in approle_secrets must exist in auth_backends."
   }
+  validation {
+    condition = alltrue([
+      for v in values(var.approle_secrets) :
+      (v.secret_id_ttl == null ? true : v.secret_id_ttl >= 0 && floor(v.secret_id_ttl) == v.secret_id_ttl) &&
+      (v.secret_id_num_uses == null ? true : v.secret_id_num_uses >= 0 && floor(v.secret_id_num_uses) == v.secret_id_num_uses)
+    ])
+    error_message = "secret_id_ttl and secret_id_num_uses must be non-negative whole numbers when set."
+  }
   default = {
     placeholder = {
       role_name       = "placeholder"
