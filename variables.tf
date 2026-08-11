@@ -67,17 +67,19 @@ variable "policies" {
 
 variable "approle_secrets" {
   type = map(object({
-    role_name       = string
-    backend         = optional(string, "global_approle")
-    namespace       = optional(string)
-    token_ttl       = optional(number, 300)
-    token_max_ttl   = optional(number, 300)
-    token_policy    = list(string)
-    token_type      = optional(string, "default")
-    token_period    = optional(number)
-    kv_mount        = string
-    credential_path = string
-    absent          = optional(bool, false)
+    role_name          = string
+    backend            = optional(string, "global_approle")
+    namespace          = optional(string)
+    token_ttl          = optional(number, 300)
+    token_max_ttl      = optional(number, 300)
+    token_policy       = list(string)
+    token_type         = optional(string, "default")
+    token_period       = optional(number)
+    secret_id_ttl      = optional(number)
+    secret_id_num_uses = optional(number)
+    kv_mount           = string
+    credential_path    = string
+    absent             = optional(bool, false)
   }))
   validation {
     condition = alltrue([
@@ -85,6 +87,14 @@ variable "approle_secrets" {
       v.absent == true ? true : contains(keys(var.auth_backends), v.backend)
     ])
     error_message = "Backend in approle_secrets must exist in auth_backends."
+  }
+  validation {
+    condition = alltrue([
+      for v in values(var.approle_secrets) :
+      (v.secret_id_ttl == null ? true : v.secret_id_ttl >= 0 && floor(v.secret_id_ttl) == v.secret_id_ttl) &&
+      (v.secret_id_num_uses == null ? true : v.secret_id_num_uses >= 0 && floor(v.secret_id_num_uses) == v.secret_id_num_uses)
+    ])
+    error_message = "secret_id_ttl and secret_id_num_uses must be non-negative whole numbers when set."
   }
   default = {
     placeholder = {

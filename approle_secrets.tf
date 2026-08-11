@@ -2,14 +2,16 @@
 resource "vault_approle_auth_backend_role" "cluster" {
   for_each = var.bootstrap_phase >= 3 ? local.active.approles : {}
 
-  backend        = vault_auth_backend.approle[each.value.backend].path
-  role_name      = each.value.role_name
-  namespace      = each.value.namespace
-  token_ttl      = each.value.token_ttl
-  token_max_ttl  = each.value.token_max_ttl
-  token_policies = each.value.token_policy
-  token_type     = lookup(each.value, "token_type", "default")
-  token_period   = each.value.token_period
+  backend            = vault_auth_backend.approle[each.value.backend].path
+  role_name          = each.value.role_name
+  namespace          = each.value.namespace
+  token_ttl          = each.value.token_ttl
+  token_max_ttl      = each.value.token_max_ttl
+  token_policies     = each.value.token_policy
+  token_type         = lookup(each.value, "token_type", "default")
+  token_period       = each.value.token_period
+  secret_id_ttl      = each.value.secret_id_ttl
+  secret_id_num_uses = each.value.secret_id_num_uses
 
   depends_on = [
     vault_policy.policy,
@@ -24,6 +26,13 @@ resource "vault_approle_auth_backend_role_secret_id" "cluster" {
   backend   = vault_auth_backend.approle[each.value.backend].path
   role_name = each.value.role_name
   namespace = each.value.namespace
+
+  lifecycle {
+    replace_triggered_by = [
+      vault_approle_auth_backend_role.cluster[each.key].secret_id_ttl,
+      vault_approle_auth_backend_role.cluster[each.key].secret_id_num_uses
+    ]
+  }
 }
 
 # KV Secrets mit role_id und secret_id
