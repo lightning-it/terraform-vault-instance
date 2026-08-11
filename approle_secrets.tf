@@ -12,6 +12,7 @@ resource "vault_approle_auth_backend_role" "cluster" {
   token_period       = each.value.token_period
   secret_id_ttl      = each.value.secret_id_ttl
   secret_id_num_uses = each.value.secret_id_num_uses
+
   depends_on = [
     vault_policy.policy,
     vault_mount.secret
