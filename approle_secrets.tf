@@ -32,10 +32,6 @@ resource "vault_approle_auth_backend_role_secret_id" "cluster" {
       vault_approle_auth_backend_role.cluster[each.key].secret_id_num_uses
     ]
   }
-
-  depends_on = [
-    vault_approle_auth_backend_role.cluster[each.key]
-  ]
 }
 
 # KV Secrets mit role_id und secret_id
