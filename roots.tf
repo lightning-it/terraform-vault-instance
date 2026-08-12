@@ -25,6 +25,11 @@ resource "vault_pki_secret_backend_root_cert" "root" {
   key_type             = try(each.value.key_type, "rsa")
   key_bits             = try(each.value.key_bits, 4096)
   exclude_cn_from_sans = true
+  ou                   = try(each.value.ou, null)
+  organization         = try(each.value.organization, null)
+  country              = try(each.value.country, null)
+  locality             = try(each.value.locality, null)
+  province             = try(each.value.province, null)
 }
 
 resource "vault_pki_secret_backend_config_urls" "root_urls" {
