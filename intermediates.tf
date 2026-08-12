@@ -14,10 +14,18 @@ resource "vault_mount" "inter" {
 resource "vault_pki_secret_backend_intermediate_cert_request" "csr" {
   for_each = var.bootstrap_phase >= 3 ? local.active.pki_inters : {}
 
-  namespace   = each.value.namespace
-  backend     = vault_mount.inter[each.key].path
-  type        = "internal"
-  common_name = each.value.common_name
+  namespace            = each.value.namespace
+  backend              = vault_mount.inter[each.key].path
+  type                 = "internal"
+  common_name          = each.value.common_name
+  key_type             = try(each.value.key_type, "ec")
+  key_bits             = try(each.value.key_bits, 256)
+  exclude_cn_from_sans = true
+  ou                   = try(each.value.ou, null)
+  organization         = try(each.value.organization, null)
+  country              = try(each.value.country, null)
+  locality             = try(each.value.locality, null)
+  province             = try(each.value.province, null)
 }
 
 # optional save CSR as Secret

@@ -12,6 +12,7 @@ resource "vault_pki_secret_backend_role" "issue" {
   allow_ip_sans      = try(each.value.allow_ip_sans, false)
   allow_bare_domains = try(each.value.allow_bare_domains, false)
   allow_glob_domains = try(each.value.allow_glob_domains, true)
+  allow_localhost    = try(each.value.allow_localhost, false)
   ttl                = try(each.value.ttl, 7776000)
   max_ttl            = try(each.value.max_ttl, 7776000)
   generate_lease     = try(each.value.generate_lease, true)
