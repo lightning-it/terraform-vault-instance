@@ -28,7 +28,7 @@ resource "vault_kv_secret_v2" "approle_credentials" {
 
   # Dynamische Werte (role_id) werden hier referenziert
   data_json = jsonencode({
-    role_id   = vault_approle_auth_backend_role.cluster[each.key].role_id
+    role_id = vault_approle_auth_backend_role.cluster[each.key].role_id
   })
 
   depends_on = [
